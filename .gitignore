@@ -3,6 +3,8 @@
 appsscript.json
 init.sh
 
+test/
+
 # Logs
 logs
 *.log
