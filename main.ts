@@ -36,7 +36,38 @@ function main() {
     Drive.Files?.remove(docID);
   }
 }
+function generateCSVFileByText(arr1: string[], arr2: string[]) {}
 
+interface monthlyHistory {
+  products: string[];
+  prices: string[];
+}
+function parseText(): monthlyHistory {
+  let folder = DriveApp.getFolderById(TEXT_DIR);
+  let files = folder.getFiles();
+
+  let texts: string[] = [];
+
+  while (files.hasNext()) {
+    let file = files.next();
+    let text = file.getBlob().getDataAsString();
+    texts = text.split("\n");
+  }
+  let products: string[] = [];
+  let prices: string[] = [];
+  for (let i = 0; i < texts.length; i++) {
+    if (i % 2 == 0) {
+      products.push(texts[i]);
+    } else {
+      prices.push(texts[i]);
+    }
+  }
+  let monthlyHistory: monthlyHistory = {
+    products: products.splice(0, 1),
+    prices: prices.splice(0, 1),
+  };
+  return monthlyHistory;
+}
 function readFiles(folderID: string): GoogleAppsScript.Drive.FileIterator {
   let folder: GoogleAppsScript.Drive.Folder = DriveApp.getFolderById(folderID);
   let files = folder.getFiles();
